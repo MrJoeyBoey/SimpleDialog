@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="animation_dialog_simple" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/animation_dialog_show</item>
+        <item name="android:windowExitAnimation">@anim/animation_dialog_dismiss</item>
+    </style>
+
+</resources>
