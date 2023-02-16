@@ -74,4 +74,28 @@
         android:textSize="@dimen/size_middle_small"
         android:gravity="center"/>
 
+    <TextView
+        android:id="@+id/tv_ex_negative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_neutral"
+        android:padding="10dp"
+        android:text="@string/ex_negative"
+        android:textColor="@color/light_blue"
+        android:background="@drawable/selector_simple_dialog_button"
+        android:textSize="@dimen/size_middle_small"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_ex_positive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_ex_negative"
+        android:padding="10dp"
+        android:text="@string/ex_positive"
+        android:textColor="@color/light_blue"
+        android:background="@drawable/selector_simple_dialog_button"
+        android:textSize="@dimen/size_middle_small"
+        android:gravity="center"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

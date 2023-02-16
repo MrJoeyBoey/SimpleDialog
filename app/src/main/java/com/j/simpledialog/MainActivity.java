@@ -29,7 +29,13 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(v -> {
 
                     })
-                    .setNeutralButton("拒绝且不再提示", view1 -> {
+                    .setNeutralButton("稍后提醒我", view1 -> {
+
+                    })
+                    .setExNegativeButton(v -> {
+
+                    })
+                    .setExPositiveButton(v -> {
 
                     }).show();
         });

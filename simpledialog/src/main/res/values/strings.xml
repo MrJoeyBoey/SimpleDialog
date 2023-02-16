@@ -7,4 +7,6 @@
     <string name="please_input">请输入</string>
     <string name="number_1">1</string>
     <string name="later">稍后</string>
+    <string name="ex_negative">取消且不再提示</string>
+    <string name="ex_positive">确定且不再提示</string>
 </resources>

@@ -48,11 +48,16 @@ public class SimpleDialog extends AlertDialog {
         private String negativeButtonText;
         private String positiveButtonText;
         private String neutralButtonText;
+        private String exNegativeButtonText;
+        private String exPositiveButtonText;
 
         private boolean negativeButtonVisible = true;
         private boolean neutralButtonVisible = false;
+        private boolean exNegativeButtonVisible = false;
+        private boolean exPositiveButtonVisible = false;
 
-        private View.OnClickListener onNegativeButtonClick, onPositiveButtonClick, onNeutralButtonClick;
+        private View.OnClickListener onNegativeButtonClick, onPositiveButtonClick, onNeutralButtonClick,
+                onExNegativeButtonClick, onExPositiveButtonClick;
 
         public Builder(Context context) {
             this.context = context;
@@ -119,6 +124,48 @@ public class SimpleDialog extends AlertDialog {
             return this;
         }
 
+        public Builder setExNegativeButtonText(String exNegativeButtonText) {
+            this.exNegativeButtonText = exNegativeButtonText;
+            return this;
+        }
+        public Builder setExNegativeButton(View.OnClickListener onExNegativeButtonClick) {
+            return setExNegativeButton("取消且不再提醒", true, onExNegativeButtonClick);
+        }
+        public Builder setExNegativeButton(String exNegativeButtonText, View.OnClickListener onExNegativeButtonClick) {
+            return setExNegativeButton(exNegativeButtonText, true, onExNegativeButtonClick);
+        }
+        public Builder setExNegativeButton(String exNegativeButtonText, boolean visible, View.OnClickListener onExNegativeButtonClick) {
+            this.exNegativeButtonText = exNegativeButtonText;
+            this.exNegativeButtonVisible = visible;
+            this.onExNegativeButtonClick = onExNegativeButtonClick;
+            return this;
+        }
+        public Builder setExNegativeButtonVisible(boolean visible) {
+            this.exNegativeButtonVisible = visible;
+            return this;
+        }
+
+        public Builder setExPositiveButtonText(String exPositiveButtonText) {
+            this.exPositiveButtonText = exPositiveButtonText;
+            return this;
+        }
+        public Builder setExPositiveButton(View.OnClickListener onExPositiveButtonClick) {
+            return setExPositiveButton("确定且不再提醒", true, onExPositiveButtonClick);
+        }
+        public Builder setExPositiveButton(String exPositiveButtonText, View.OnClickListener onExPositiveButtonClick) {
+            return setExPositiveButton(exPositiveButtonText, true, onExPositiveButtonClick);
+        }
+        public Builder setExPositiveButton(String exPositiveButtonText, boolean visible, View.OnClickListener onExPositiveButtonClick) {
+            this.exPositiveButtonText = exPositiveButtonText;
+            this.exPositiveButtonVisible = visible;
+            this.onExPositiveButtonClick = onExPositiveButtonClick;
+            return this;
+        }
+        public Builder setExPositiveButtonVisible(boolean visible) {
+            this.exPositiveButtonVisible = visible;
+            return this;
+        }
+
         public SimpleDialog create() {
             SimpleDialog simpleDialog = new SimpleDialog(context);
 
@@ -130,9 +177,13 @@ public class SimpleDialog extends AlertDialog {
             if (!TextUtils.isEmpty(positiveButtonText)) simpleDialogView.setText(R.id.tv_positive, positiveButtonText);
             if (!TextUtils.isEmpty(negativeButtonText)) simpleDialogView.setText(R.id.tv_negative, negativeButtonText);
             if (!TextUtils.isEmpty(neutralButtonText)) simpleDialogView.setText(R.id.tv_neutral, neutralButtonText);
+            if (!TextUtils.isEmpty(exNegativeButtonText)) simpleDialogView.setText(R.id.tv_ex_negative, exNegativeButtonText);
+            if (!TextUtils.isEmpty(exPositiveButtonText)) simpleDialogView.setText(R.id.tv_ex_positive, exPositiveButtonText);
 
             simpleDialogView.setVisible(R.id.tv_negative, negativeButtonVisible);
             simpleDialogView.setVisible(R.id.tv_neutral, neutralButtonVisible);
+            simpleDialogView.setVisible(R.id.tv_ex_negative, exNegativeButtonVisible);
+            simpleDialogView.setVisible(R.id.tv_ex_positive, exPositiveButtonVisible);
 
             simpleDialogView.setOnClickListener(R.id.tv_positive,view -> {
                 simpleDialog.dismiss();
@@ -145,6 +196,14 @@ public class SimpleDialog extends AlertDialog {
             simpleDialogView.setOnClickListener(R.id.tv_neutral, view -> {
                 simpleDialog.dismiss();
                 if (this.onNeutralButtonClick != null) this.onNeutralButtonClick.onClick(view);
+            });
+            simpleDialogView.setOnClickListener(R.id.tv_ex_negative, view -> {
+                simpleDialog.dismiss();
+                if (this.onExNegativeButtonClick != null) this.onExNegativeButtonClick.onClick(view);
+            });
+            simpleDialogView.setOnClickListener(R.id.tv_ex_positive, view -> {
+                simpleDialog.dismiss();
+                if (this.onExPositiveButtonClick != null) this.onExPositiveButtonClick.onClick(view);
             });
 
             simpleDialog.setView(simpleDialogView.getView());
