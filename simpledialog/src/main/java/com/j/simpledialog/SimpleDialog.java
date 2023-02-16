@@ -27,7 +27,7 @@ public class SimpleDialog extends AlertDialog {
         }
     }
 
-    private Drawable getBackgroundDrawable(){
+    private Drawable getBackgroundDrawable() {
         GradientDrawable g = new GradientDrawable();
         g.setColor(Color.WHITE);
         g.setShape(GradientDrawable.RECTANGLE);
@@ -45,84 +45,106 @@ public class SimpleDialog extends AlertDialog {
 
         private String title;
         private String content;
-        private String cancelText;
-        private String confirmText;
+        private String negativeButtonText;
+        private String positiveButtonText;
+        private String neutralButtonText;
 
         private boolean negativeButtonVisible = true;
+        private boolean neutralButtonVisible = false;
 
-        private View.OnClickListener onNegativeButtonClick,onPositiveButtonClick;
+        private View.OnClickListener onNegativeButtonClick, onPositiveButtonClick, onNeutralButtonClick;
 
-        public Builder(Context context){
+        public Builder(Context context) {
             this.context = context;
         }
 
-        public Builder setTitle(String title){
+        public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
 
-        public Builder setContent(String content){
+        public Builder setContent(String content) {
             this.content = content;
             return this;
         }
 
-        public Builder setCancelText(String cancelText){
-            this.cancelText = cancelText;
+        public Builder setPositiveButtonText(String positiveButtonText) {
+            this.positiveButtonText = positiveButtonText;
             return this;
         }
-
-        public Builder setConfirmText(String confirmText){
-            this.confirmText = confirmText;
-            return this;
+        public Builder setPositiveButton(View.OnClickListener onPositiveButtonClick) {
+            return setPositiveButton("确定", onPositiveButtonClick);
         }
-
-        public Builder setNegativeButton(View.OnClickListener onNegativeButtonClick){
-            setNegativeButton("取消",onNegativeButtonClick);
-            return this;
-        }
-        public Builder setNegativeButton(String cancelText, View.OnClickListener onNegativeButtonClick){
-            this.cancelText = cancelText;
-            this.onNegativeButtonClick = onNegativeButtonClick;
-            return this;
-        }
-
-        public Builder setNegativeButtonVisible(boolean visible){
-            this.negativeButtonVisible = visible;
-            return this;
-        }
-
-        public Builder setPositiveButton(View.OnClickListener onPositiveButtonClick){
-            setPositiveButton("确定", onPositiveButtonClick);
-            return this;
-        }
-        public Builder setPositiveButton(String confirmText, View.OnClickListener onPositiveButtonClick){
-            this.confirmText = confirmText;
+        public Builder setPositiveButton(String positiveButtonText, View.OnClickListener onPositiveButtonClick) {
+            this.positiveButtonText = positiveButtonText;
             this.onPositiveButtonClick = onPositiveButtonClick;
             return this;
         }
 
-        public SimpleDialog create(){
+        public Builder setNegativeButtonText(String negativeButtonText) {
+            this.negativeButtonText = negativeButtonText;
+            return this;
+        }
+        public Builder setNegativeButton(View.OnClickListener onNegativeButtonClick) {
+            return setNegativeButton("取消", onNegativeButtonClick);
+        }
+        public Builder setNegativeButton(String negativeButtonText, View.OnClickListener onNegativeButtonClick) {
+            this.negativeButtonText = negativeButtonText;
+            this.onNegativeButtonClick = onNegativeButtonClick;
+            return this;
+        }
+        public Builder setNegativeButtonVisible(boolean visible) {
+            this.negativeButtonVisible = visible;
+            return this;
+        }
+
+        public Builder setNeutralButtonText(String neutralButtonText) {
+            this.neutralButtonText = neutralButtonText;
+            return this;
+        }
+        public Builder setNeutralButton(View.OnClickListener onNeutralButtonClick) {
+            return setNeutralButton("稍后", true, onNeutralButtonClick);
+        }
+        public Builder setNeutralButton(String neutralButtonText, View.OnClickListener onNeutralButtonClick) {
+            return setNeutralButton(neutralButtonText, true, onNeutralButtonClick);
+        }
+        public Builder setNeutralButton(String neutralButtonText, boolean visible, View.OnClickListener onNeutralButtonClick) {
+            this.neutralButtonText = neutralButtonText;
+            this.neutralButtonVisible = visible;
+            this.onNeutralButtonClick = onNeutralButtonClick;
+            return this;
+        }
+        public Builder setNeutralButtonVisible(boolean visible) {
+            this.neutralButtonVisible = visible;
+            return this;
+        }
+
+        public SimpleDialog create() {
             SimpleDialog simpleDialog = new SimpleDialog(context);
 
             MyView simpleDialogView = new MyView(context, R.layout.dialog_simple);
             if (!TextUtils.isEmpty(title)) simpleDialogView.setText(R.id.tv_title, title);
-            if (TextUtils.isEmpty(content)) {
-                simpleDialogView.setVisible(R.id.tv_content, false);
-                setMargin(simpleDialogView.getView(R.id.tv_title), 0, dp2px(20), 0, 0);
-                setMargin(simpleDialogView.getView(R.id.ll_btn), 0, dp2px(20), 0, 0);
-            } else {
-                simpleDialogView.setText(R.id.tv_content, content);
-            }
-            if (!TextUtils.isEmpty(cancelText)) simpleDialogView.setText(R.id.tv_cancel, cancelText);
-            if (!TextUtils.isEmpty(confirmText)) simpleDialogView.setText(R.id.tv_confirm, confirmText);
-            simpleDialogView.setVisible(R.id.tv_cancel, negativeButtonVisible);
-            simpleDialogView.setOnClickListener(R.id.tv_cancel, view -> {
+            simpleDialogView.setText(R.id.tv_content, content);
+            simpleDialogView.setVisible(R.id.tv_content, !TextUtils.isEmpty(content));
+
+            if (!TextUtils.isEmpty(positiveButtonText)) simpleDialogView.setText(R.id.tv_positive, positiveButtonText);
+            if (!TextUtils.isEmpty(negativeButtonText)) simpleDialogView.setText(R.id.tv_negative, negativeButtonText);
+            if (!TextUtils.isEmpty(neutralButtonText)) simpleDialogView.setText(R.id.tv_neutral, neutralButtonText);
+
+            simpleDialogView.setVisible(R.id.tv_negative, negativeButtonVisible);
+            simpleDialogView.setVisible(R.id.tv_neutral, neutralButtonVisible);
+
+            simpleDialogView.setOnClickListener(R.id.tv_positive,view -> {
+                simpleDialog.dismiss();
+                if (this.onPositiveButtonClick != null) this.onPositiveButtonClick.onClick(view);
+            });
+            simpleDialogView.setOnClickListener(R.id.tv_negative, view -> {
                 simpleDialog.dismiss();
                 if (this.onNegativeButtonClick != null) this.onNegativeButtonClick.onClick(view);
             });
-            simpleDialogView.setOnClickListener(R.id.tv_confirm,view -> {
+            simpleDialogView.setOnClickListener(R.id.tv_neutral, view -> {
                 simpleDialog.dismiss();
-                if (this.onPositiveButtonClick != null) this.onPositiveButtonClick.onClick(view);
+                if (this.onNeutralButtonClick != null) this.onNeutralButtonClick.onClick(view);
             });
 
             simpleDialog.setView(simpleDialogView.getView());
@@ -130,7 +152,7 @@ public class SimpleDialog extends AlertDialog {
             return simpleDialog;
         }
 
-        private void setMargin(View view, int left, int top, int right, int bottom){
+        private void setMarginTop(View view, int top) {
             ViewGroup.LayoutParams lp = view.getLayoutParams();
             ViewGroup.MarginLayoutParams mlp;
             if (lp instanceof ViewGroup.MarginLayoutParams) {
@@ -138,11 +160,11 @@ public class SimpleDialog extends AlertDialog {
             } else {
                 mlp = new ViewGroup.MarginLayoutParams(lp);
             }
-            mlp.setMargins(left, top, right, bottom);
+            mlp.setMargins(0, top, 0, 0);
             view.setLayoutParams(mlp);
         }
 
-        public SimpleDialog show(){
+        public SimpleDialog show() {
             SimpleDialog simpleDialog = this.create();
             simpleDialog.show();
             return simpleDialog;

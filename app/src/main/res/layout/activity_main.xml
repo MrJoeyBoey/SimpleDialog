@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity"
     android:gravity="center">
 
@@ -13,6 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="simple dialog"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/acb_simple_dialog2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="simple dialog content"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/acb_simple_edit_dialog"

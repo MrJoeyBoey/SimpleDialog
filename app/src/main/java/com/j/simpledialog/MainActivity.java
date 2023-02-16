@@ -19,6 +19,21 @@ public class MainActivity extends AppCompatActivity {
                     }).show();
         });
 
+        findViewById(R.id.acb_simple_dialog2).setOnClickListener(view -> {
+            new SimpleDialog.Builder(this)
+                    .setTitle("测试")
+                    .setContent("测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容")
+                    .setNegativeButton(view1 -> {
+
+                    })
+                    .setPositiveButton(v -> {
+
+                    })
+                    .setNeutralButton("拒绝且不再提示", view1 -> {
+
+                    }).show();
+        });
+
         findViewById(R.id.acb_simple_edit_dialog).setOnClickListener(view -> {
             new SimpleEditDialog.Builder(this)
                     .setTitle("测试")
